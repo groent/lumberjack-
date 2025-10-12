@@ -11,8 +11,7 @@ def approx_ln(x,n):
     g_0 = np.sqrt(x)
 
     # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
-    for i in range(0,n):
-
+    for i in range(1,n+1):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
         a_i = (a_0 + g_0) / 2 
         g_i = np.sqrt(a_i * g_0)
@@ -66,21 +65,61 @@ for i in range(1,102):
     y_approx_error.append(float(np.abs(np.log(1.41) - approx_ln(1.41 ,i))))
 
 # Display the plot seperately. 
-plt.plot(x, y_approx_error )
-plt.show()
+# plt.plot(x, y_approx_error )
+# plt.show()
 
 # Task 4
 def fast_approx(x,n):
+    # Initialize main variables
     a_0 = (1+x)/2 
     g_0 = np.sqrt(x)
-    d_0i = 0
+    # d_x represents a step in the recursions process. This is the initial step.
+    d_0i = (a_0 + g_0) /2 
+    # This is the previous step which we store as a variable that will be used later on in the algorithm
+    d_kmin1imin1 = 0
+    # This is the next step in the algorithm 
+    d_ki = 0
     # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
-    for i in range(0,n):
+    for i in range(0,n+1):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
         a_i = (a_0 + g_0) / 2 
         g_i = np.sqrt(a_i * g_0)
         a_0 = a_i
         g_0 = g_i 
+        # Save the previous step of d_x for future use. 
+        d_kmin1imin1 = d_0i
+        # Define d_x as the current step of the algorithm 
         d_0i = a_i
-        for j in range(1,n):
-            d_ki = (d_0i-4**(-n)*d_0i)
+        #Using the given formula and variables determine the next step
+        for j in range(1, n+1):
+            d_ki = (d_0i-(4**(-j))*d_kmin1imin1)/(1-(4**(-j)))
+    return (x-1)/d_ki
+
+print(f"Fast_approx = {fast_approx(2,10)}")
+
+# Task 5
+# Make a separate x linspace
+x_2 = np.linspace(1,20,100)
+
+# Make an empty list to store the y error values.
+y_acc_approx1_error = []
+y_acc_approx2_error = []
+y_acc_approx3_error = []
+y_acc_approx4_error = []
+y_acc_approx5_error = []
+# Iterate 101, error values to match the length of the x linspace
+for i in range(1,101):
+    # append the absolute subtraction of the numpy approximation with our approximation.
+    y_acc_approx1_error.append(float(np.abs(np.log(i) - fast_approx(i ,1))))
+    y_acc_approx2_error.append(float(np.abs(np.log(i) - fast_approx(i ,2))))
+    y_acc_approx3_error.append(float(np.abs(np.log(i) - fast_approx(i ,3))))
+    y_acc_approx4_error.append(float(np.abs(np.log(i) - fast_approx(i ,4))))
+    y_acc_approx5_error.append(float(np.abs(np.log(i) - fast_approx(i ,5))))
+plt.scatter(x_2, y_acc_approx1_error, label = "Iter = 1" )
+plt.scatter(x_2, y_acc_approx2_error, label = "Iter = 2" )
+plt.scatter(x_2, y_acc_approx3_error, label = "Iter = 3" )
+plt.scatter(x_2, y_acc_approx4_error, label = "Iter = 4" )
+plt.scatter(x_2, y_acc_approx5_error, label = "Iter = 5" )
+plt.yscale('log')
+plt.legend()
+plt.show()
