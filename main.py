@@ -26,47 +26,40 @@ print(f"Approx: {approx_ln(2,100)}, numpy: {np.log(2)} ")
 # Here we get out x values, we iterate by one to get 100 values 
 x = np.linspace(1,101,101)
 
-# We get our y-values by applying our functions to the x-value for each itteration of our functions 
-y_numpy_ln = (np.log(x))
-y_approx_ln_1 = approx_ln(x,1)
-y_approx_ln_2 = approx_ln(x,2)
-y_approx_ln_3 = approx_ln(x,3)
-y_approx_ln_5 = approx_ln(x,5)
-
 # To display both the plots we use the subplot function
-# f, (ax1, ax2) = plt.subplots(2, 1, sharey=True)
+f, (ax1, ax2) = plt.subplots(2, 1, sharey=True)
 
-# ax1.set_title('Numpy ln(x) vs approx_ln')
+ax1.set_title('Numpy ln(x) and approx_ln')
 
 # We plot our y-values 
-# ax1.plot(x, y_numpy_ln, label = "numpy_ln")
-# ax1.plot(x, y_approx_ln_1, label = "approx_ln_1")
-# ax1.plot(x, y_approx_ln_2, label = "approx_ln_2")
-# ax1.plot(x, y_approx_ln_3, label = "approx_ln_3")
-# ax1.plot(x, y_approx_ln_5, label = "approx_ln_5")
-# ax1.legend()
+ax1.plot(x, np.log(x), label = "numpy_ln")
+# We plot of a given n-value and itterate up to a certain range 
+for i in range(1,6):
+    ax1.plot(x, approx_ln(x, i), label = f"approx_ln_{i}")
+ax1.legend()
 
+ax2.set_title("Difference between numpy ln and approx_ln")
 # We plot the error by plotting the difference between numpy's "ln" function to our "approx_ln" functions 
-# ax2.plot(x, y_numpy_ln - y_approx_ln_1, label = "approx_ln_1")
-# ax2.plot(x, y_numpy_ln - y_approx_ln_2, label = "approx_ln_2")
-# ax2.plot(x, y_numpy_ln - y_approx_ln_3, label = "approx_ln_3")
-# ax2.plot(x, y_numpy_ln - y_approx_ln_5, label = "approx_ln_5")
-# ax2.legend()
+# We plot for a step size and then iterate up to a certain range.
+for i in range(1,6):
+    ax2.plot(x, np.log(x) - approx_ln(x, i), label = "approx_ln_1")
+ax2.legend()
 
-# plt.show()
+plt.show()
 
 #Task 3 
 
 # Make an empty list to store the y error values.
 y_approx_error = []
 # Iterate 101, error values to match the length of the x linspace
-for i in range(1,102):
+for i in range(1,len(x)+1):
     # append the absolute subtraction of the numpy approximation with our approximation.
     y_approx_error.append(float(np.abs(np.log(1.41) - approx_ln(1.41 ,i))))
 
 # Display the plot seperately. 
-# plt.plot(x, y_approx_error )
-# plt.show()
+plt.title("Absolute value of the Error vs. n for the case x= 1.41")
+plt.plot(x, y_approx_error )
+plt.show()
 
 # Task 4
 def fast_approx(x,n):
@@ -97,29 +90,21 @@ def fast_approx(x,n):
 
 print(f"Fast_approx = {fast_approx(2,10)}")
 
-# Task 5
+ 
+#  Task 5
 # Make a separate x linspace
-x_2 = np.linspace(1,20,100)
+x_2 = np.linspace(0,20,100)
 
-# Make an empty list to store the y error values.
-y_acc_approx1_error = []
-y_acc_approx2_error = []
-y_acc_approx3_error = []
-y_acc_approx4_error = []
-y_acc_approx5_error = []
-# Iterate 101, error values to match the length of the x linspace
-for i in range(1,101):
-    # append the absolute subtraction of the numpy approximation with our approximation.
-    y_acc_approx1_error.append(float(np.abs(np.log(i) - fast_approx(i ,1))))
-    y_acc_approx2_error.append(float(np.abs(np.log(i) - fast_approx(i ,2))))
-    y_acc_approx3_error.append(float(np.abs(np.log(i) - fast_approx(i ,3))))
-    y_acc_approx4_error.append(float(np.abs(np.log(i) - fast_approx(i ,4))))
-    y_acc_approx5_error.append(float(np.abs(np.log(i) - fast_approx(i ,5))))
-plt.scatter(x_2, y_acc_approx1_error, label = "Iter = 1" )
-plt.scatter(x_2, y_acc_approx2_error, label = "Iter = 2" )
-plt.scatter(x_2, y_acc_approx3_error, label = "Iter = 3" )
-plt.scatter(x_2, y_acc_approx4_error, label = "Iter = 4" )
-plt.scatter(x_2, y_acc_approx5_error, label = "Iter = 5" )
+for i in range(0,6):
+    y_fast_approx_error = []
+    #Iterate as many times as the length of x_2, error values to match the length of the x linspace
+    for j in range(0,len(x_2)):
+        # append the absolute subtraction of the numpy approximation with our approximation.
+        y_fast_approx_error.append(float(np.abs(np.log(x_2[j]) - fast_approx(x_2[j] ,i))))
+    plt.scatter(x_2,y_fast_approx_error, label= f"iteration {i}")
+
+plt.title("Error behaviour of the Accelerated Carlsson method fo the log")
+plt.xlim([0, 20])
 plt.yscale('log')
 plt.legend()
 plt.show()
