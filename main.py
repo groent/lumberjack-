@@ -76,15 +76,15 @@ def fast_approx(x,n):
     a = (1+x)/2 
     g = np.sqrt(x)
     d = [[a]]
-    # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
-    for i in range(0,2*n):
+    # Append the a value of approx_ln to an array.
+    for i in range(0,n*2):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
         a = (a + g) / 2 
         g = np.sqrt(a * g) 
         d[0].append(a)
-        d.append([])
         
     for j in range(0,i+2):
+        d.append([])
         for k in range(1, len(d[j])):
             d[j+1].append((d[j][k]-4**(-(j+1))*d[j][k-1])/(1-4**(-(j+1))))
     return (x-1)/d[n-1][n-1]
@@ -96,7 +96,7 @@ print(f"Fast_approx = {fast_approx(2,10)}")
 # Make a separate x linspace
 x_2 = np.linspace(0,20,100)
 
-for i in range(0,6):
+for i in range(1,6):
     y_fast_approx_error = []
     #Iterate as many times as the length of x_2, error values to match the length of the x linspace
     for j in range(0,len(x_2)):
