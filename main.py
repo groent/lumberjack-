@@ -10,15 +10,15 @@ def approx_ln(x,n):
     """ 
     This function approximates the natural log of a give "x", an "n" number of iterations. 
     """
-    a_0 = (1+x)/2 
-    g_0 = np.sqrt(x)
+    a = (1+x)/2 
+    g = np.sqrt(x)
 
     # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
     for i in range(1,n+1):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
-        a_0 = (a_0 + g_0) / 2 
-        g_0 = np.sqrt(a_0 * g_0)
-    return (x-1)/a_0
+        a = (a + g) / 2 
+        g = np.sqrt(a * g)
+    return (x-1)/a
 
 print(f"Approx: {approx_ln(2,100)}, numpy: {np.log(2)} ")
 
@@ -73,30 +73,21 @@ def fast_approx(x,n):
     """ 
     Uses the given recurssion formula to approximate the natural logarithm of "x", for "n" iterations.  
     """
-    # Initialize main variables
-    a_0 = (1+x)/2 
-    g_0 = np.sqrt(x)
-    # d_x represents a step in the recursions process. This is the initial step.
-    d_0i = (a_0 + g_0) /2 
-    # This is the previous step which we store as a variable that will be used later on in the algorithm
-    d_kmin1imin1 = 0
-    # This is the next step in the algorithm 
-    d_ki = 0
+    a = (1+x)/2 
+    g = np.sqrt(x)
+    d = [[a]]
     # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
-    for i in range(0,n+1):
+    for i in range(0,2*n):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
-        a_i = (a_0 + g_0) / 2 
-        g_i = np.sqrt(a_i * g_0)
-        a_0 = a_i
-        g_0 = g_i 
-        # Save the previous step of d_x for future use. 
-        d_kmin1imin1 = d_0i
-        # Define d_x as the current step of the algorithm 
-        d_0i = a_i
-        #Using the given formula and variables determine the next step
-        for j in range(1, n+1):
-            d_ki = (d_0i-(4**(-j))*d_kmin1imin1)/(1-(4**(-j)))
-    return (x-1)/d_ki
+        a = (a + g) / 2 
+        g = np.sqrt(a * g) 
+        d[0].append(a)
+        d.append([])
+        
+    for j in range(0,i+2):
+        for k in range(1, len(d[j])):
+            d[j+1].append((d[j][k]-4**(-(j+1))*d[j][k-1])/(1-4**(-(j+1))))
+    return (x-1)/d[n-1][n-1]
 
 print(f"Fast_approx = {fast_approx(2,10)}")
 
