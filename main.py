@@ -7,16 +7,17 @@ import matplotlib.pyplot as plt
 
 # We start by creating the function we were instructed to create, and initializing the variables were required to initiliaze.
 def approx_ln(x,n):
+    """ 
+    This function approximates the natural log of a give "x", an "n" number of iterations. 
+    """
     a_0 = (1+x)/2 
     g_0 = np.sqrt(x)
 
     # In this for loop we iterate, the approximation by the specified "n" amount of steps. 
     for i in range(1,n+1):
         # Since our starting value is a_0, we express "a_i+1" as a_i using the given formula. We then replace the starting value a_0 with a_i and then continue. The same applies for g_0 and g_i. 
-        a_i = (a_0 + g_0) / 2 
-        g_i = np.sqrt(a_i * g_0)
-        a_0 = a_i
-        g_0 = g_i 
+        a_0 = (a_0 + g_0) / 2 
+        g_0 = np.sqrt(a_0 * g_0)
     return (x-1)/a_0
 
 print(f"Approx: {approx_ln(2,100)}, numpy: {np.log(2)} ")
@@ -30,7 +31,8 @@ x = np.linspace(1,101,101)
 f, (ax1, ax2) = plt.subplots(2, 1, sharey=True)
 
 ax1.set_title('Numpy ln(x) and approx_ln')
-
+ax1.set_xlabel("x")
+ax1.set_ylabel("y")
 # We plot our y-values 
 ax1.plot(x, np.log(x), label = "numpy_ln")
 # We plot of a given n-value and itterate up to a certain range 
@@ -39,10 +41,12 @@ for i in range(1,6):
 ax1.legend()
 
 ax2.set_title("Difference between numpy ln and approx_ln")
+ax2.set_xlabel("x")
+ax2.set_ylabel("y")
 # We plot the error by plotting the difference between numpy's "ln" function to our "approx_ln" functions 
 # We plot for a step size and then iterate up to a certain range.
 for i in range(1,6):
-    ax2.plot(x, np.log(x) - approx_ln(x, i), label = "approx_ln_1")
+    ax2.plot(x, np.log(x) - approx_ln(x, i), label = f"approx_ln_{i}")
 ax2.legend()
 
 plt.show()
@@ -59,10 +63,16 @@ for i in range(1,len(x)+1):
 # Display the plot seperately. 
 plt.title("Absolute value of the Error vs. n for the case x= 1.41")
 plt.plot(x, y_approx_error )
+plt.xlabel("x")
+plt.ylabel("y")
+plt.yscale("log")
 plt.show()
 
 # Task 4
 def fast_approx(x,n):
+    """ 
+    Uses the given recurssion formula to approximate the natural logarithm of "x", for "n" iterations.  
+    """
     # Initialize main variables
     a_0 = (1+x)/2 
     g_0 = np.sqrt(x)
@@ -106,5 +116,7 @@ for i in range(0,6):
 plt.title("Error behaviour of the Accelerated Carlsson method fo the log")
 plt.xlim([0, 20])
 plt.yscale('log')
+plt.xlabel("x")
+plt.ylabel("y")
 plt.legend()
 plt.show()
