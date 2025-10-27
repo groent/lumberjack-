@@ -48,7 +48,7 @@ for i in range(1,6):
     ax2.plot(x, np.log(x) - approx_ln(x, i), label = f"approx_ln_{i}")
 ax2.legend()
 ax2.set_yscale("log")
-
+plt.tight_layout()
 plt.show()
 
 
@@ -95,7 +95,7 @@ def fast_approx(x,n):
 # Obtain x values 
 x_2 = np.linspace(0,20,100)
 
-for i in range(1,6):
+for i in range(1,7):
     y_fast_approx_error = []
     # Calculate the error and store the value for each x value in x_2
     for j in range(0,len(x_2)):
