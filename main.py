@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 # In this task we approximate ln(2) by using the theory provided in the assigment. 
  
 
-# We start by creating the function we were instructed to create, and initializing the variables were required to initiliaze.
 def approx_ln(x,n):
     """ 
     This function approximates the natural log of a give "x", an "n" number of iterations. 
@@ -95,7 +94,7 @@ def fast_approx(x,n):
 # Obtain x values 
 x_2 = np.linspace(0,20,100)
 
-for i in range(1,7):
+for i in range(2,8):
     y_fast_approx_error = []
     # Calculate the error and store the value for each x value in x_2
     for j in range(0,len(x_2)):
